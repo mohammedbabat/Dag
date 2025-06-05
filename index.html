@@ -1250,43 +1250,55 @@
         }
 
         // Rechnung als PDF herunterladen
-        function downloadInvoiceAsPdf() {
-            if (!selectedCustomerId) {
-                showModal('Fehler', 'Bitte wählen Sie einen Kunden aus.');
-                return;
-            }
-            
-            if (invoiceItems.length === 0) {
-                showModal('Fehler', 'Die Rechnung enthält keine Positionen.');
-                return;
-            }
+function downloadInvoiceAsPdf() {
+    if (!selectedCustomerId) {
+        showModal('Fehler', 'Bitte wählen Sie einen Kunden aus.');
+        return;
+    }
+    
+    if (invoiceItems.length === 0) {
+        showModal('Fehler', 'Die Rechnung enthält keine Positionen.');
+        return;
+    }
 
-            // PDF-Vorlage vorbereiten
-            if (!preparePdfTemplate()) {
-                return;
-            }
+    // PDF-Vorlage vorbereiten
+    if (!preparePdfTemplate()) {
+        return;
+    }
 
-            const invoicePdf = document.getElementById('invoicePdf');
-            const invoiceNumber = pdfInvoiceNumber.textContent;
-            
-            // PDF erstellen
-            html2canvas(invoicePdf, {
-                scale: 2,
-                useCORS: true,
-                logging: false
-            }).then(canvas => {
-                const imgData = canvas.toDataURL('image/png');
-                const pdf = new jsPDF('p', 'mm', 'a4');
-                const imgProps = pdf.getImageProperties(imgData);
-                const pdfWidth = pdf.internal.pageSize.getWidth();
-                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-                
-                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
-                pdf.save(`${invoiceNumber}.pdf`);
-                
-                showModal('PDF erstellt', `Die Rechnung wurde erfolgreich als PDF heruntergeladen.`);
-            });
-        }
+    const invoicePdf = document.getElementById('invoicePdf');
+    const invoiceNumber = pdfInvoiceNumber.textContent;
+    
+    // Sicherstellen, dass jsPDF verfügbar ist
+    if (typeof window.jspdf === 'undefined' || typeof window.jspdf.jsPDF === 'undefined') {
+        console.error('jsPDF ist nicht verfügbar');
+        showModal('Fehler', 'PDF-Bibliothek konnte nicht geladen werden. Bitte versuchen Sie es später erneut.');
+        return;
+    }
+    
+    // PDF erstellen
+    const { jsPDF } = window.jspdf;
+    
+    html2canvas(invoicePdf, {
+        scale: 2,
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const imgProps = pdf.getImageProperties(imgData);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+        pdf.save(`${invoiceNumber}.pdf`);
+        
+        showModal('PDF erstellt', `Die Rechnung wurde erfolgreich als PDF heruntergeladen.`);
+    }).catch(error => {
+        console.error('Fehler beim Erstellen des PDFs:', error);
+        showModal('Fehler', 'Beim Erstellen des PDFs ist ein Fehler aufgetreten.');
+    });
+}
 
         // Modal anzeigen
         function showModal(title, message) {
