@@ -1153,33 +1153,161 @@
         }
 
         // Rechnung per E-Mail senden (Demo)
-        function sendInvoice() {
-            if (!selectedCustomerId) {
-                showModal('Fehler', 'Bitte wählen Sie einen Kunden aus.');
-                return;
-            }
-            
-            if (invoiceItems.length === 0) {
-                showModal('Fehler', 'Die Rechnung enthält keine Positionen.');
-                return;
-            }
+         if (!selectedCustomerId) {
+        showModal('Fehler', 'Bitte wählen Sie einen Kunden aus.');
+        return;
+    }
+    
+    if (invoiceItems.length === 0) {
+        showModal('Fehler', 'Die Rechnung enthält keine Positionen.');
+        return;
+    }
 
-            const customer = customers.find(c => c.id === selectedCustomerId);
-            if (!customer) return;
+    const customer = customers.find(c => c.id === selectedCustomerId);
+    if (!customer) return;
 
-            // Neue Rechnung erstellen
-            const newInvoice = {
-                id: nextInvoiceId++,
-                customerId: customer.id,
-                date: new Date().toISOString().split('T')[0],
-                items: invoiceItems.map(item => ({
-                    productId: item.product.id,
-                    quantity: item.quantity
-                })),
-                status: "Offen"
-            };
+    // Zuerst PDF erstellen
+    if (!preparePdfTemplate()) {
+        return;
+    }
+
+    const invoicePdf = document.getElementById('invoicePdf');
+    const invoiceNumber = pdfInvoiceNumber.textContent;
+    
+    // PDF erstellen und dann E-Mail simulieren
+    html2canvas(invoicePdf, {
+        scale: 2,
+        useCORS: true,
+        logging: false
+    }).then(canvas => {
+        // Neue Rechnung erstellen
+        const newInvoice = {
+            id: nextInvoiceId++,
+            customerId: customer.id,
+            date: new Date().toISOString().split('T')[0],
+            items: invoiceItems.map(item => ({
+                productId: item.product.id,
+                quantity: item.quantity
+            })),
+            status: "Offen"
+        };
+        
+        invoices.push(newInvoice);
+        
+        // Verkaufszahlen aktualisieren
+        invoiceItems.forEach(item => {
+            const product = products.find(p => p.id === item.product.id);
+            if (product) {
+                product.sales = (product.sales || 0) + item.quantity;
+            }
+        });
+        
+        // Kundeneinkäufe aktualisieren
+        customer.purchases = (customer.purchases || 0) + 1;
+        
+        // E-Mail-Dialog anzeigen
+        showEmailSentDialog(customer, invoiceNumber);
+        
+        // Rechnung zurücksetzen
+        invoiceItems = [];
+        renderInvoiceTable();
+        updateDashboard();
+    }).catch(error => {
+        console.error('Fehler beim Erstellen des PDFs:', error);
+        showModal('Fehler', 'Beim Erstellen der E-Mail ist ein Fehler aufgetreten.');
+    });
+}
+
+// Fügen Sie diese neue Funktion hinzu:
+function showEmailSentDialog(customer, invoiceNumber) {
+    // E-Mail-Dialog erstellen
+    const emailDialog = document.createElement('div');
+    emailDialog.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+    emailDialog.id = 'emailDialog';
+    
+    const currentDate = new Date().toLocaleDateString('de-DE');
+    const currentTime = new Date().toLocaleTimeString('de-DE');
+    
+    emailDialog.innerHTML = `
+        <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4">
+            <div class="border-b pb-4 mb-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900">Neue E-Mail</h3>
+                        <p class="text-sm text-gray-600">Gesendet: ${currentDate}, ${currentTime}</p>
+                    </div>
+                    <button id="closeEmailBtn" class="text-gray-400 hover:text-gray-500">
+                        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
             
-            invoices.push(newInvoice);
+            <div class="space-y-4">
+                <div>
+                    <p class="text-sm font-medium text-gray-700">Von:</p>
+                    <p class="text-sm text-gray-900">buchhaltung@ihrunternehmen.de</p>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-700">An:</p>
+                    <p class="text-sm text-gray-900">${customer.email}</p>
+                </div>
+                <div>
+                    <p class="text-sm font-medium text-gray-700">Betreff:</p>
+                    <p class="text-sm text-gray-900">Ihre Rechnung ${invoiceNumber}</p>
+                </div>
+                <div class="border-t pt-4">
+                    <p class="text-sm text-gray-900">Sehr geehrte(r) ${customer.name},</p>
+                    <p class="text-sm text-gray-900 mt-2">
+                        anbei erhalten Sie Ihre Rechnung ${invoiceNumber} vom ${currentDate}.
+                    </p>
+                    <p class="text-sm text-gray-900 mt-2">
+                        Bitte überweisen Sie den Rechnungsbetrag innerhalb von 14 Tagen auf das in der Rechnung angegebene Konto.
+                    </p>
+                    <p class="text-sm text-gray-900 mt-2">
+                        Bei Fragen stehen wir Ihnen gerne zur Verfügung.
+                    </p>
+                    <p class="text-sm text-gray-900 mt-4">
+                        Mit freundlichen Grüßen,<br>
+                        Ihr Unternehmen GmbH
+                    </p>
+                </div>
+                
+                <div class="bg-gray-50 p-3 rounded-md">
+                    <div class="flex items-center">
+                        <svg class="h-8 w-8 text-red-600 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 1h10a1 1 0 011 1v10a1 1 0 01-1 1H5a1 1 0 01-1-1V5a1 1 0 011-1z" clip-rule="evenodd"></path>
+                            <path d="M6 6h8v8H6z"></path>
+                        </svg>
+                        <div>
+                            <p class="text-sm font-medium text-gray-900">${invoiceNumber}.pdf</p>
+                            <p class="text-xs text-gray-500">PDF-Dokument</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-6 flex justify-end">
+                <button id="confirmEmailBtn" class="bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-200">
+                    Schließen
+                </button>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(emailDialog);
+    
+    // Event-Listener für Schließen-Buttons
+    document.getElementById('closeEmailBtn').addEventListener('click', () => {
+        document.body.removeChild(emailDialog);
+    });
+    
+    document.getElementById('confirmEmailBtn').addEventListener('click', () => {
+        document.body.removeChild(emailDialog);
+        showModal('E-Mail gesendet', `Die Rechnung wurde erfolgreich per E-Mail an ${customer.email} gesendet.`);
+    });
+}
             
             // Verkaufszahlen aktualisieren
             invoiceItems.forEach(item => {
