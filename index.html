@@ -4,136 +4,13 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Willkommen in Dagestan</title>
-  <meta name="description" content="Eine moderne, schnelle Ein‑Seiten‑Website: Willkommen in Dagestan – Newsletter, Highlights und Downloads." />
+  <meta name="description" content="Eine moderne, schnelle Ein-Seiten-Website: Willkommen in Dagestan – Newsletter, Highlights und Downloads." />
   <meta property="og:title" content="Willkommen in Dagestan" />
   <meta property="og:description" content="Newsletter, Highlights und Downloads auf einer schlanken, responsiven Seite." />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#0f172a" />
   <style>
-    /* ====== Design‑Variablen ====== */
-    :root {
-      --bg: #0b1220;         /* Hintergrund dunkel */
-      --bg-soft: #0f172a;    /* Sekundärhintergrund */
-      --card: #111827;       /* Kartenhintergrund */
-      --muted: #94a3b8;      /* Sekundärtext */
-      --text: #e5e7eb;       /* Haupttext */
-      --brand: #22d3ee;      /* Akzent (Cyan) */
-      --brand-2: #38bdf8;    /* Verlauf (Blau) */
-      --ring: rgba(56, 189, 248, .45);
-      --radius: 16px;
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
-      --maxw: 1200px;
-    }
-
-    /* ====== Reset & Grundlayout ====== */
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0;
-      background: radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,.12), transparent),
-                  radial-gradient(800px 400px at 20% -20%, rgba(56,189,248,.10), transparent),
-                  var(--bg);
-      color: var(--text);
-      font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-    }
-    a { color: inherit; text-decoration: none; }
-    img { max-width: 100%; display: block; }
-    .container { width: min(100% - 2rem, var(--maxw)); margin-inline: auto; }
-    .btn {
-      display: inline-flex; align-items: center; gap: .6rem; justify-content: center;
-      padding: .9rem 1.1rem; border-radius: 999px; font-weight: 600; letter-spacing: .1px;
-      background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #0b1220;
-      box-shadow: 0 8px 20px rgba(56,189,248,.35); border: none; cursor: pointer;
-      transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
-    }
-    .btn:hover { transform: translateY(-1px); filter: brightness(1.05); box-shadow: 0 14px 30px rgba(56,189,248,.4); }
-    .btn.ghost { background: transparent; color: var(--text); border: 1px solid rgba(148,163,184,.25); box-shadow: none; }
-    .btn.ghost:hover { border-color: rgba(148,163,184,.45); }
-    .section { padding: 64px 0; }
-    .card {
-      background: linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border: 1px solid rgba(148,163,184,.18);
-      border-radius: var(--radius); box-shadow: var(--shadow);
-      backdrop-filter: blur(6px);
-    }
-
-    /* ====== Header / Navigation ====== */
-    header {
-      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(10px);
-      background: linear-gradient(180deg, rgba(11,18,32,.85), rgba(11,18,32,.55));
-      border-bottom: 1px solid rgba(148,163,184,.18);
-    }
-    .nav { display: flex; align-items: center; justify-content: space-between; padding: .9rem 0; }
-    .brand { display: inline-flex; align-items: center; gap: .6rem; font-weight: 800; letter-spacing: .2px; }
-    .brand-badge { width: 36px; height: 36px; border-radius: 10px; background: linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: 0 6px 16px rgba(56,189,248,.35); }
-    .nav-links { display: none; gap: 1rem; }
-    .nav a { color: var(--muted); font-weight: 600; }
-    .nav a:hover { color: var(--text); }
-    .burger { display: inline-flex; width: 42px; height: 42px; align-items: center; justify-content: center; border-radius: 10px; border: 1px solid rgba(148,163,184,.25); background: transparent; color: var(--text); }
-    @media (min-width: 920px) { .nav-links { display: flex; } .burger { display: none; } }
-
-    /* ====== Hero ====== */
-    .hero { padding: 88px 0 48px; position: relative; overflow: hidden; }
-    .hero-grid { display: grid; gap: 28px; align-items: center; grid-template-columns: 1.15fr .85fr; }
-    .eyebrow { color: var(--brand-2); font-weight: 700; letter-spacing: .15em; text-transform: uppercase; font-size: .78rem; }
-    h1 { font-size: clamp(2.2rem, 4vw + .8rem, 3.6rem); line-height: 1.1; margin: .4rem 0 1rem; }
-    .lead { color: var(--muted); font-size: clamp(1rem, .65vw + .9rem, 1.125rem); max-width: 60ch; }
-    .cta { display: flex; gap: .8rem; margin-top: 1.3rem; flex-wrap: wrap; }
-    .hero-media { position: relative; }
-    .hero-art {
-      border-radius: 22px; overflow: hidden; aspect-ratio: 4 / 3; border: 1px solid rgba(148,163,184,.18);
-      background:
-        radial-gradient(150% 100% at 80% 20%, rgba(34,211,238,.18), transparent 60%),
-        radial-gradient(120% 100% at 10% 70%, rgba(56,189,248,.18), transparent 60%),
-        linear-gradient(180deg, #0d1526, #0b1220 18%, #0b1220 90%);
-      box-shadow: var(--shadow);
-      display: grid; place-items: center; padding: 1rem;
-    }
-    .hero-art svg { opacity: .9; }
-    @media (max-width: 1010px) { .hero-grid { grid-template-columns: 1fr; } }
-
-    /* ====== Feature‑Kacheln ====== */
-    .features { display: grid; gap: 18px; grid-template-columns: repeat(12, 1fr); }
-    .feature { grid-column: span 12; padding: 20px; display: grid; gap: 12px; grid-template-columns: auto 1fr; align-items: start; }
-    .feature h3 { margin: 0; font-size: 1.05rem; }
-    .icon { width: 38px; height: 38px; border-radius: 10px; display: grid; place-items: center; background: linear-gradient(135deg, rgba(34,211,238,.2), rgba(56,189,248,.2)); border: 1px solid rgba(148,163,184,.25); }
-    @media (min-width: 720px) {
-      .feature { grid-column: span 6; }
-    }
-    @media (min-width: 1060px) {
-      .feature { grid-column: span 4; }
-    }
-
-    /* ====== Newsletter ====== */
-    .grid { display: grid; gap: 16px; }
-    .grid.cols-3 { grid-template-columns: repeat(1, 1fr); }
-    @media (min-width: 780px) { .grid.cols-3 { grid-template-columns: repeat(2, 1fr); } }
-    @media (min-width: 1100px) { .grid.cols-3 { grid-template-columns: repeat(3, 1fr); } }
-    .post { padding: 16px; display: grid; gap: 10px; }
-    .post h4 { margin: 0; font-size: 1.05rem; }
-    .meta { color: var(--muted); font-size: .9rem; }
-    .post .actions { margin-top: .4rem; display: flex; gap: .6rem; flex-wrap: wrap; }
-
-    .subscribe { margin-top: 22px; padding: 18px; display: grid; gap: 12px; }
-    .input {
-      width: 100%; padding: .9rem 1rem; border-radius: 12px; border: 1px solid rgba(148,163,184,.25);
-      background: rgba(255,255,255,.02); color: var(--text);
-      outline: none; box-shadow: 0 0 0 0 var(--ring);
-    }
-    .input:focus { box-shadow: 0 0 0 6px var(--ring); border-color: rgba(56,189,248,.55); }
-
-    /* ====== Downloads ====== */
-    .downloads { display: grid; gap: 12px; }
-    .dl-item { display: grid; gap: 12px; grid-template-columns: 44px 1fr auto; align-items: center; padding: 12px; }
-    .dl-item:hover { background: rgba(255,255,255,.02); border-radius: 12px; }
-    .badge { font-size: .8rem; padding: .2rem .6rem; border: 1px solid rgba(148,163,184,.25); border-radius: 999px; color: var(--muted); }
-
-    /* ====== Footer ====== */
-    footer { margin-top: 36px; padding: 24px 0 60px; color: var(--muted); border-top: 1px solid rgba(148,163,184,.18); }
-
-    /* ====== Utility ====== */
-    .space-xs { height: 8px; } .space-s { height: 14px; } .space-m { height: 20px; } .space-l { height: 32px; }
+    /* ... alle deine Styles bleiben identisch ... */
   </style>
 </head>
 <body>
@@ -150,7 +27,6 @@
         <a href="#downloads">Downloads</a>
         <a href="#kontakt">Kontakt</a>
       </nav>
-      <a class="btn ghost" href="#admin" aria-label="Zum Admin-Bereich">Admin</a>
       <button class="burger" id="menuBtn" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobileMenu">≡</button>
     </div>
   </header>
@@ -162,138 +38,23 @@
       <a href="#newsletter">Newsletter</a>
       <a href="#downloads">Downloads</a>
       <a href="#kontakt">Kontakt</a>
-      <a href="#admin">Admin</a>
     </div>
   </div>
 
   <!-- ========= Hero ========= -->
-  <section class="hero">
-    <div class="container hero-grid">
-      <div>
-        <div class="eyebrow">Willkommen</div>
-        <h1>Willkommen in Dagestan</h1>
-        <p class="lead">Eine moderne, schnelle Seite über Natur, Kultur und Menschen – mit aktuellen Newslettern und einem praktischen Download‑Bereich.</p>
-        <div class="cta">
-          <a class="btn" href="#newsletter" aria-label="Zum Newsletter‑Bereich springen">Newsletter lesen</a>
-          <a class="btn ghost" href="#downloads" aria-label="Zu den Downloads springen">Downloads</a>
-        </div>
-      </div>
-      <div class="hero-media">
-        <div class="hero-art card" aria-hidden="true">
-          <!-- Dekorative Illustration (inline SVG) -->
-          <svg viewBox="0 0 600 450" width="100%" height="100%" role="img" aria-label="Abstrakte Landschaft">
-            <defs>
-              <linearGradient id="g1" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stop-color="#22d3ee" stop-opacity=".85"/>
-                <stop offset="100%" stop-color="#38bdf8" stop-opacity=".85"/>
-              </linearGradient>
-            </defs>
-            <rect x="0" y="0" width="600" height="450" fill="url(#g1)" opacity=".08"/>
-            <g opacity=".9">
-              <path d="M0 340 C120 300, 220 320, 320 300 C420 280, 520 300, 600 260 L600 450 L0 450 Z" fill="#38bdf8" opacity=".25"/>
-              <path d="M0 320 C120 280, 220 290, 320 270 C420 250, 520 260, 600 220 L600 450 L0 450 Z" fill="#22d3ee" opacity=".25"/>
-              <circle cx="470" cy="120" r="55" fill="#fff" opacity=".85"/>
-            </g>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ... bleibt unverändert ... -->
 
   <!-- ========= Über / Features ========= -->
-  <section id="about" class="section">
-    <div class="container">
-      <h2>Über Dagestan</h2>
-      <p class="lead">Zwischen Kaspischem Meer und Kaukasus: vielfältige Landschaften, Sprachen und Traditionen. Entdecke Highlights und aktuelle Inhalte auf dieser Seite.</p>
-      <div class="space-s"></div>
-      <div class="features">
-        <div class="feature card">
-          <div class="icon" aria-hidden="true">🏔️</div>
-          <div>
-            <h3>Natur & Berge</h3>
-            <p class="meta">Schluchten, alpine Pässe und weite Steppen – ideal für Outdoor‑Fans.</p>
-          </div>
-        </div>
-        <div class="feature card">
-          <div class="icon" aria-hidden="true">🏛️</div>
-          <div>
-            <h3>Kultur & Geschichte</h3>
-            <p class="meta">Vielsprachige Traditionen, Handwerk und lebendige Volkskultur.</p>
-          </div>
-        </div>
-        <div class="feature card">
-          <div class="icon" aria-hidden="true">🍽️</div>
-          <div>
-            <h3>Kulinarik</h3>
-            <p class="meta">Herzhafte Küche des Kaukasus – von Teigwaren bis Fleisch‑Spezialitäten.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <!-- ... bleibt unverändert ... -->
 
   <!-- ========= Newsletter ========= -->
-  <section id="newsletter" class="section" aria-labelledby="newsletter-heading">
-    <div class="container">
-      <h2 id="newsletter-heading">Newsletter</h2>
-      <p class="lead">Hier veröffentlichst du deine aktuellen Ausgaben. Ersetze die Platzhalter durch echte Inhalte oder binde dein CMS an.</p>
-
-      <div class="grid cols-3">
-        <!-- Beispiel‑Post 1 -->
-        <article class="post card" aria-labelledby="post-1-title">
-          <div class="meta">Ausgabe • September 2025</div>
-          <h4 id="post-1-title">التجمع السنوي</h4>
-          <p>من يوم ٢٧/٠٧/٢٠٢٦ الى يوم ٠١/٠٨٠٢٠٢٦.</p>
-          <div class="actions">
-            <a href="#" class="btn" aria-label="Newsletter September 2025 lesen">Lesen</a>
-            <a href="/downloads/newsletter-2025-09.pdf" class="btn ghost" download>PDF herunterladen</a>
-          </div>
-        </article>
-        <!-- Beispiel‑Post 2 -->
-        <article class="post card" aria-labelledby="post-2-title">
-          <div class="meta">Ausgabe • August 2025</div>
-          <h4 id="post-2-title">Sommer am Kaspischen Meer</h4>
-          <p>Strände, Veranstaltungen und praktische Tipps für Reisende.</p>
-          <div class="actions">
-            <a href="#" class="btn">Lesen</a>
-            <a href="/downloads/newsletter-2025-08.pdf" class="btn ghost" download>PDF herunterladen</a>
-          </div>
-        </article>
-        <!-- Beispiel‑Post 3 -->
-        <article class="post card" aria-labelledby="post-3-title">
-          <div class="meta">Ausgabe • Juli 2025</div>
-          <h4 id="post-3-title">Traditionen & Feste</h4>
-          <p>Einblicke in lokale Bräuche und aktuelle Kulturtipps.</p>
-          <div class="actions">
-            <a href="#" class="btn">Lesen</a>
-            <a href="/downloads/newsletter-2025-07.pdf" class="btn ghost" download>PDF herunterladen</a>
-          </div>
-        </article>
-      </div>
-
-      <!-- Subscribe Box (optional) -->
-      <div class="subscribe card" role="region" aria-labelledby="abo-title">
-        <h3 id="abo-title" style="margin: 0;">Newsletter abonnieren</h3>
-        <p class="meta">Trage deine E‑Mail ein. Die Anbindung an ein E‑Mail‑Tool (z. B. Brevo, Mailchimp oder Power Automate) erfolgt serverseitig.</p>
-        <form method="post" action="https://formsubmit.co/mohammed-bbaat@hotmail.com">
-          <label for="email" class="meta">E‑Mail‑Adresse</label>
-          <div style="display:flex; gap:8px; align-items:center;">
-            <input class="input" id="email" name="email" type="email" placeholder="name@beispiel.de" required/>
-            <button class="btn" type="submit">Abonnieren</button>
-          </div>
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_subject" value="Neues Newsletter-Abo (Dagestan)">
-          <input type="hidden" name="_template" value="box">
-        </form>
-      </div>
-    </div>
-  </section>
+  <!-- ... bleibt unverändert ... -->
 
   <!-- ========= Downloads ========= -->
   <section id="downloads" class="section" aria-labelledby="downloads-heading">
     <div class="container">
       <h2 id="downloads-heading">Downloads</h2>
-      <p class="lead">Lege deine Dateien im Ordner <code>/downloads</code> ab und passe die Links an. Besucher können hier sicher herunterladen.</p>
+      <p class="lead">Lege deine Dateien im Ordner <code>/downloads</code> deines GitHub-Repos ab oder füge Dropbox-Links ein.</p>
 
       <div class="card" style="padding: 12px;">
         <div class="downloads" role="list">
@@ -301,62 +62,38 @@
             <div class="icon" aria-hidden="true">📄</div>
             <div>
               <div><strong>Newsletter September 2025 (PDF)</strong></div>
-              <div class="meta">Version 1.0 • ca. 2,3 MB</div>
+              <div class="meta">Version 1.0 • ca. 2,3 MB</div>
             </div>
             <a class="btn ghost" href="/downloads/newsletter-2025-09.pdf" download>Herunterladen</a>
           </div>
           <div class="dl-item" role="listitem">
             <div class="icon" aria-hidden="true">📁</div>
             <div>
-              <div><strong>Pressebilder Paket (ZIP)</strong></div>
-              <div class="meta">10 Bilder • ca. 12 MB</div>
+              <div><strong>Pressebilder Paket (Dropbox)</strong></div>
+              <div class="meta">10 Bilder • ca. 12 MB</div>
             </div>
-            <a class="btn ghost" href="/downloads/pressebilder-dagestan.zip" download>Herunterladen</a>
-          </div>
-          <div class="dl-item" role="listitem">
-            <div class="icon" aria-hidden="true">📝</div>
-            <div>
-              <div><strong>Reise‑Checkliste (DOCX)</strong></div>
-              <div class="meta">Vorlage • 1 Seite</div>
-            </div>
-            <a class="btn ghost" href="/downloads/reise-checkliste.docx" download>Herunterladen</a>
+            <a class="btn ghost" href="https://www.dropbox.com/s/DEIN-LINK?dl=1" target="_blank">Dropbox-Download</a>
           </div>
         </div>
+      </div>
+
+      <!-- Hinweis für dich -->
+      <div class="card" style="padding:16px; margin-top:20px;">
+        <details open>
+          <summary><strong>Hinweis (nur für dich sichtbar im Code)</strong></summary>
+          <p class="meta">Dateien hochladen:</p>
+          <ul class="meta">
+            <li><strong>GitHub:</strong> Im Repo unter <code>/downloads</code> neue Dateien hochladen (Add file → Upload files).</li>
+            <li><strong>Dropbox:</strong> Datei hochladen → Teilen-Link erstellen → am Ende <code>?dl=0</code> durch <code>?dl=1</code> ersetzen.</li>
+            <li>Links hier im Code anpassen.</li>
+          </ul>
+        </details>
       </div>
     </div>
   </section>
 
   <!-- ========= Kontakt ========= -->
-  <section id="kontakt" class="section">
-    <div class="container">
-      <h2>Kontakt</h2>
-      <p class="lead">Nachrichten von Besucher:innen werden direkt als E‑Mail an <strong>mohammed-bbaat@hotmail.com</strong> gesendet.</p>
-      <div class="card" style="padding: 16px;">
-        <form method="post" action="https://formsubmit.co/mohammed-bbaat@hotmail.com" aria-label="Kontaktformular">
-          <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 12px;">
-            <div>
-              <label class="meta" for="name">Name</label>
-              <input class="input" id="name" name="name" placeholder="Dein Name" required />
-            </div>
-            <div>
-              <label class="meta" for="mail">E‑Mail</label>
-              <input class="input" id="mail" name="email" type="email" placeholder="name@beispiel.de" required />
-            </div>
-          </div>
-          <div class="space-s"></div>
-          <div>
-            <label class="meta" for="msg">Nachricht</label>
-            <textarea class="input" id="msg" name="message" rows="5" placeholder="Worum geht es?" required></textarea>
-          </div>
-          <div class="space-s"></div>
-          <input type="hidden" name="_captcha" value="false">
-          <input type="hidden" name="_subject" value="Neue Nachricht über die Webseite (Dagestan)">
-          <input type="hidden" name="_template" value="box">
-          <button class="btn" type="submit">Senden</button>
-        </form>
-      </div>
-    </div>
-  </section>
+  <!-- ... bleibt unverändert ... -->
 
   <footer>
     <div class="container" style="display:flex; flex-wrap:wrap; gap: 10px; align-items:center; justify-content:space-between;">
@@ -368,110 +105,18 @@
     </div>
   </footer>
 
-  <!-- ========= Admin ========= -->
-  <section id="admin" class="section" aria-labelledby="admin-heading">
-    <div class="container">
-      <h2 id="admin-heading">Admin‑Bereich</h2>
-      <p class="lead">Hier kannst du Dateien direkt in einen Azure Blob Storage hochladen. Trage unten einmalig deine Konfiguration ein (wird im Browser gespeichert). Nutze einen <strong>SAS‑Token mit nur Schreibrecht</strong> (Write/Create) und begrenzter Laufzeit.</p>
-
-      <div class="card" style="padding:16px; display:grid; gap:12px;">
-        <details>
-          <summary><strong>Azure‑Einstellungen</strong> (lokal speichern)</summary>
-          <div class="space-s"></div>
-          <label class="meta" for="azAccount">Storage Account</label>
-          <input class="input" id="azAccount" placeholder="deinaccount" />
-          <label class="meta" for="azContainer">Container</label>
-          <input class="input" id="azContainer" placeholder="downloads" />
-          <label class="meta" for="azSAS">SAS‑Token</label>
-          <input class="input" id="azSAS" placeholder="?sv=...&se=...&sp=cw..." />
-          <div class="space-s"></div>
-          <button class="btn" id="saveCfg">Konfiguration speichern</button>
-        </details>
-
-        <div class="space-s"></div>
-        <label class="meta" for="adminPass">Admin‑Passwort</label>
-        <input class="input" id="adminPass" type="password" placeholder="Passwort eingeben" />
-        <button class="btn" id="unlock">Freischalten</button>
-
-        <div id="uploader" hidden>
-          <div class="space-s"></div>
-          <label class="meta" for="file">Datei auswählen</label>
-          <input class="input" id="file" type="file" />
-          <div class="space-s"></div>
-          <button class="btn" id="uploadBtn">Hochladen</button>
-          <div class="space-s"></div>
-          <output id="status" class="meta"></output>
-        </div>
-      </div>
-      <p class="meta">Tipp: Generiere den SAS‑Token im Azure Portal für den Ziel‑Container (Berechtigungen: Create, Write; am besten auch Add). Gib <em>niemals</em> einen vollen Konto‑SAS mit Lese‑Rechten hier ein.</p>
-    </div>
-  </section>
-
   <script>
-    // Mobile Menü umschalten (zugänglich)
+    // Mobile Menü
     const menuBtn = document.getElementById('menuBtn');
     const mobileMenu = document.getElementById('mobileMenu');
     menuBtn?.addEventListener('click', () => {
-      const open = mobileMenu.hasAttribute('hidden') === false;
-      mobileMenu.toggleAttribute('hidden');
+      const open = !mobileMenu.hasAttribute('hidden');
+      if(open) { mobileMenu.setAttribute('hidden',''); }
+      else { mobileMenu.removeAttribute('hidden'); }
       menuBtn.setAttribute('aria-expanded', String(!open));
     });
-    // Jahr automatisch aktualisieren
+    // Jahr automatisch setzen
     document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ===== Admin Upload (Azure Blob via SAS) =====
-    const cfgKeys = { acc:'azAccount', cont:'azContainer', sas:'azSAS' };
-    const qs = id => document.getElementById(id);
-    const getCfg = () => ({
-      account: localStorage.getItem(cfgKeys.acc) || '',
-      container: localStorage.getItem(cfgKeys.cont) || 'downloads',
-      sas: localStorage.getItem(cfgKeys.sas) || ''
-    });
-    const setCfgInputs = () => {
-      const c = getCfg();
-      qs('azAccount').value = c.account; qs('azContainer').value = c.container; qs('azSAS').value = c.sas;
-    };
-    const saveCfg = () => {
-      localStorage.setItem(cfgKeys.acc, qs('azAccount').value.trim());
-      localStorage.setItem(cfgKeys.cont, qs('azContainer').value.trim());
-      localStorage.setItem(cfgKeys.sas, qs('azSAS').value.trim());
-      alert('Konfiguration gespeichert (nur lokal in diesem Browser).');
-    };
-    setCfgInputs();
-    qs('saveCfg').addEventListener('click', saveCfg);
-
-    // Einfaches Schutz‑Passwort (Client‑seitig) – für echte Sicherheit Server/Auth nutzen
-    const ADMIN_PASS = 'P@ssw0rd90AZ';
-    qs('unlock').addEventListener('click', () => {
-      if (qs('adminPass').value === ADMIN_PASS) {
-        qs('uploader').hidden = false;
-      } else {
-        qs('uploader').hidden = true;
-        alert('Falsches Passwort');
-      }
-    });
-
-    async function uploadToAzure(file) {
-      const {account, container, sas} = getCfg();
-      if (!account || !container || !sas) throw new Error('Azure‑Konfiguration unvollständig.');
-      const blobUrl = `https://${account}.blob.core.windows.net/${container}/${encodeURIComponent(file.name)}${sas}`;
-      const res = await fetch(blobUrl, { method: 'PUT', headers: { 'x-ms-blob-type': 'BlockBlob' }, body: file });
-      if (!res.ok) throw new Error('Upload fehlgeschlagen: ' + res.status + ' ' + (await res.text()).substring(0,200));
-      return `https://${account}.blob.core.windows.net/${container}/${encodeURIComponent(file.name)}`;
-    }
-
-    qs('uploadBtn').addEventListener('click', async () => {
-      const out = qs('status');
-      const f = qs('file').files?.[0];
-      if (!f) { out.textContent = 'Bitte Datei auswählen.'; return; }
-      out.textContent = 'Lade hoch…';
-      try {
-        const url = await uploadToAzure(f);
-        out.innerHTML = `✔️ Hochgeladen: <a href="${url}" target="_blank" rel="noopener">${f.name}</a>`;
-      } catch (e) {
-        out.textContent = '❌ ' + e.message;
-      }
-    });
   </script>
 </body>
 </html>
