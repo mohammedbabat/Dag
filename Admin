@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin – Dagestan</title>
+  <style>
+    body { font-family: sans-serif; background:#0b1220; color:#e5e7eb; padding:2rem; }
+    .card { background:#111827; padding:1rem; border-radius:12px; max-width:500px; margin:auto; }
+    label { display:block; margin-top:1rem; }
+    input, button { width:100%; padding:0.6rem; margin-top:0.3rem; border-radius:8px; border:none; }
+    input { background:#222; color:#fff; }
+    button { background:#22d3ee; color:#000; font-weight:bold; cursor:pointer; }
+    #uploader { display:none; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Admin Upload</h1>
+    <p>Bitte Passwort eingeben, um Dateien hochzuladen.</p>
+    <input id="pw" type="password" placeholder="Password90AZ" />
+    <button id="unlock">Freischalten</button>
+
+    <div id="uploader">
+      <label>Datei auswählen</label>
+      <input id="file" type="file" />
+      <button id="uploadBtn">Hochladen</button>
+      <div id="status"></div>
+    </div>
+  </div>
+
+  <script>
+    // Passwortschutz (nur clientseitig – reicht, weil der Server auch prüft)
+    document.getElementById("unlock").addEventListener("click", () => {
+      if (document.getElementById("pw").value === "Password90AZ") {
+        document.getElementById("uploader").style.display = "block";
+      } else {
+        alert("Falsches Passwort!");
+      }
+    });
+
+    // Upload an Serverless-API
+    document.getElementById("uploadBtn").addEventListener("click", async () => {
+      const file = document.getElementById("file").files[0];
+      if (!file) return alert("Bitte Datei wählen");
+
+      const body = new FormData();
+      body.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { "x-admin-password": "Password90AZ" },
+        body
+      });
+
+      const status = document.getElementById("status");
+      if (res.ok) {
+        const data = await res.json();
+        status.innerHTML = `✔️ Hochgeladen: <a href="${data.html_url}" target="_blank">${data.path}</a>`;
+      } else {
+        status.textContent = "❌ Fehler: " + (await res.text());
+      }
+    });
+  </script>
+</body>
+</html>
