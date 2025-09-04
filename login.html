@@ -1,0 +1,83 @@
+<!-- =========================
+FILE: login.html
+Beschreibung: Login/Registrierung. Nach Erfolg -> index.html
+========================= -->
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Login – Dagestan</title>
+  <style>
+    :root{--bg:#0b1220;--card:#111827;--text:#e5e7eb;--muted:#94a3b8;--brand:#22d3ee;--radius:16px}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto}
+    .wrap{max-width:420px;margin:6vh auto;padding:20px}
+    .card{background:#111827;border:1px solid #2a3344;border-radius:var(--radius);padding:18px}
+    h1{margin:0 0 8px} .muted{color:var(--muted);margin:0 0 16px}
+    label{display:block;margin:.6rem 0 .2rem} input{width:100%;padding:.8rem;border-radius:10px;border:1px solid #2a3344;background:#0f1627;color:#e5e7eb}
+    button{width:100%;padding:.9rem;border-radius:999px;border:none;background:linear-gradient(135deg,#22d3ee,#38bdf8);color:#0b1220;font-weight:700;cursor:pointer;margin-top:.8rem}
+    a{color:#22d3ee;text-decoration:none}
+    .row{display:flex;gap:10px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Willkommen 👋</h1>
+      <p class="muted">Bitte einloggen oder registrieren, um fortzufahren.</p>
+
+      <label for="email">E-Mail</label>
+      <input id="email" type="email" autocomplete="username" required>
+      <label for="pw">Passwort</label>
+      <input id="pw" type="password" autocomplete="current-password" required>
+
+      <button id="loginBtn">Einloggen</button>
+      <div class="row">
+        <button id="signupBtn" style="flex:1">Registrieren</button>
+        <button id="resetBtn" style="flex:1;background:#263145;color:#e5e7eb">Passwort zurücksetzen</button>
+      </div>
+
+      <p class="muted" id="msg"></p>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    // Core + Auth
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+
+    // TODO: HIER deine Firebase Web-App Config einsetzen
+    const firebaseConfig = {
+      apiKey: "DEIN_API_KEY",
+      authDomain: "DEIN_PROJECT_ID.firebaseapp.com",
+      projectId: "DEIN_PROJECT_ID",
+      appId: "DEINE_APP_ID",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    const $ = id => document.getElementById(id);
+    const msg = (t) => { $("msg").textContent = t || ""; };
+
+    $("loginBtn").onclick = async () => {
+      try { await signInWithEmailAndPassword(auth, $("email").value, $("pw").value); msg("Erfolgreich eingeloggt."); location.href = "index.html"; }
+      catch(e){ msg(e.message); }
+    };
+    $("signupBtn").onclick = async () => {
+      try { await createUserWithEmailAndPassword(auth, $("email").value, $("pw").value); msg("Konto angelegt. Du bist eingeloggt."); location.href = "index.html"; }
+      catch(e){ msg(e.message); }
+    };
+    $("resetBtn").onclick = async () => {
+      try { await sendPasswordResetEmail(auth, $("email").value); msg("Reset-E-Mail gesendet."); }
+      catch(e){ msg(e.message); }
+    };
+
+    // Wenn schon eingeloggt, direkt weiter
+    onAuthStateChanged(auth, (user) => {
+      if (user) location.replace("index.html");
+    });
+  </script>
+</body>
+</html>
