@@ -169,11 +169,16 @@ FILE: index.html
 
   <script>
     const menuBtn=document.getElementById('menuBtn'); const mobileMenu=document.getElementById('mobileMenu');
-    menuBtn?.addEventListener('click',()=>{const open = !mobileMenu.hasAttribute('hidden'); if(open){mobileMenu.setAttribute('hidden','')}else{mobileMenu.removeAttribute('hidden')} menuBtn.setAttribute('aria-expanded', String(!open));});
+    menuBtn?.addEventListener('click',()=>{const open=!mobileMenu.hasAttribute('hidden'); if(open){mobileMenu.setAttribute('hidden','')}else{mobileMenu.removeAttribute('hidden')} menuBtn.setAttribute('aria-expanded', String(!open));});
     document.getElementById('year').textContent=new Date().getFullYear();
   </script>
+
+  <!-- Auth-Gate: Seite nur anzeigen, wenn eingeloggt -->
+  <!-- (auth.js enthält wieder deine Firebase Config) -->
+  <script type="module" src="auth.js"></script>
 </body>
 </html>
+
 
 <!-- =========================
 FILE: admin.html
